@@ -3,7 +3,6 @@ package com.nyayhelp.userservice.config;
 import com.nyayhelp.userservice.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,20 +19,45 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+
         http
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .cors(cors -> {})
+
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        session.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS
+                        )
                 )
+
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/users/by-auth/**").permitAll()
-                        .requestMatchers("/api/users/create").authenticated()
-                        .anyRequest().authenticated()
+
+                        .requestMatchers(
+                                "/api/users/by-auth/**"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/api/users/create"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/api/users/lawyer/documents"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                "/api/users/admin/**"
+                        ).permitAll()
+
+                        .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+                .addFilterBefore(
+                        jwtFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
 
         return http.build();
     }

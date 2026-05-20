@@ -8,4 +8,5 @@ public class UserProfileResponse {
     public String category;
     public Integer experience;
     public Double fees;
+    public String verificationStatus; 
 }

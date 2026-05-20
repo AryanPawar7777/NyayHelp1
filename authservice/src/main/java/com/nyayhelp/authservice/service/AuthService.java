@@ -9,6 +9,7 @@ import com.nyayhelp.authservice.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 
 @Service
 public class AuthService {
@@ -21,6 +22,9 @@ public class AuthService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+private RestClient restClient;
 
     public String register(RegisterRequest request) {
 
